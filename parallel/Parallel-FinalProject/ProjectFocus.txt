@@ -1,0 +1,2 @@
+Aim of this project is to see if further parallelization of counting sort will increase performance.
+This further parallelization comes from parallelizing the local sort on each machine.
