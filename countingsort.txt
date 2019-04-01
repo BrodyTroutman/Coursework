@@ -1,0 +1,66 @@
+CSCI 476: Parallel Programming 
+Assignment 6 
+Overview
+Write a C++ program that performs a multithreaded, parallel counting sort, and a serial counting sort, on a vector of 'N' random UNSIGNED integers. Restrict the unsigned integers to be in the range [ 0, k ), where 'k' is an unsigned integer.
+
+To parallelize counting sort, create 'p' threads and have each maintain its OWN LOGICAL vector of 'k' counts. There should be NO data synchronization necessary since each thread has its own counts. After the local counts have been computed, perform a PARALLEL (non tree-based) reduction to obtain the global counts. Once you have the global counts have 'p' threads populate a portion of the sorted vector. Use an unsigned CUTOFF value for the parallel version so that it calls the serial version if 'N' is LESS than or EQUAL to the cutoff.
+
+For comparison, write a serial counting sort as well. The serial version does NOT need to use a cutoff.
+
+Use a mt19937 engine with a seed from random_device to generate random unsigned int's in the half-closed range [ 0, k ). Do NOT use any distribution objects. After you populate the initial vector, copy it into two additional vectors. Sort one with the parallel counting sort, one with the serial counting sort, and one with std::sort. Check that all three vectors are equal by using operator== for vectors (do NOT use std::equals).
+
+Time each of the three sorting algorithms by using using this Timer class. Compile with '-O3' to obtain timing values.
+
+ENSURE all sorts are correct. An incorrect sort will result in a MAJOR deduction. Also, AVOID mutexes, global variables, and unnecessary copies.
+
+Input Specification
+Input the size of the vector ('N'), the upper bound on the random integers ('k'), the number of threads ('p'), and the serial cutoff.
+
+Use PRECISELY the format below with the EXACT same SPACING and SPELLING.
+
+N      ==> <UserInput>
+k      ==> <UserInput> 
+p      ==> <UserInput> 
+Cutoff ==> <UserInput>
+Output Specification
+Output the parallel counting sort time, the serial counting sort time, and the std::sort time. Use milliseconds and LIMIT the decimal places to two. Also output whether the parallel and serial algorithms correctly sorted the input vector, by comparing each sorted vector to the one produced by std::sort. If the vectors are the same, output "true", otherwise output "false". Use std::boolalpha for this purpose.
+
+Use PRECISELY the format below with the EXACT same SPACING and SPELLING. Each time is RIGHT justified in a field of width 8.
+
+Sample Output
+
+N      ==> 1000
+k      ==> 20
+p      ==> 8
+Cutoff ==> 10
+
+Parallel time:  xxxxx.xx ms
+Serial time:    xxxxx.xx ms
+std::sort time: xxxxx.xx ms
+
+Parallel ok? true
+Serial ok?   true
+Required Functions
+std::generate_n
+
+std::boolalpha
+
+// Serial counting sort of 'v'
+void
+countingSort (vector<unsigned>& v, ...);
+
+// Parallel counting sort of 'v'
+void
+parCountingSort (vector<unsigned>& v, ...);
+What to Submit
+Submit your C++ driver file, "Timer.hpp", and a Makefile (named "Makefile"). The rules in your Makefile must be correct, and typing "make" must correctly produce an executable.
+
+Further Exploration
+Use Boost Thread Pools to minimize thread creation and destruction overhead.
+
+Hints
+Before you write any code, work through a small example on paper with convenient numbers. E.g., you might use N = 10, k = 4, and p = 2.
+
+Your counting sort does NOT need to be STABLE.
+
+Gary M. Zoppetti, Ph.D. 

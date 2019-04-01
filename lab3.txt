@@ -1,0 +1,52 @@
+CSCI 476: Parallel Programming 
+Assignment 3 
+Overview
+Write a parallel C++ program that computes the sum of a vector of integers. To achieve parallelism, spawn 'p' std::thread-s, and have each compute a local sum. Make the local sum accessible to the master thread, which will compute the global sum and print it along with the time it took to compute. In addition, compute the global sum serially in the master thread and print it along with the time it took to compute.
+
+Use a LOCAL variable 'A' of type 'vector<int>' to hold the numbers to be summed. Restrict the 'A' values to be between 0 and 4, inclusive, to make overflow unlikely. You MUST use uniform_int_distribution and a minstd_rand generator with a seed of ZERO. Generate the random integers on the master thread BEFORE spawning worker threads.
+
+Write a VOID function that each worker thread will execute, which accumulates a local sum of a contiguous block of elements, and makes it available to the master thread. Avoid data races, but do NOT use a mutex or other form of data synchronization. You MUST pass the vector by const reference to this function, and may pass other parameters as well. Do NOT use global variables.
+
+Time the parallel sum and serial sum using this Timer class. For the parallel sum, start the timer RIGHT before creating the worker threads, and stop it immediately after the global sum is computed (BEFORE doing any output). For the serial sum, start the timer RIGHT before the call to accumulate, and stop it RIGHT afterwards. Do NOT time any output code.
+
+Once you've debugged your program, compile it with optimization level O3 ('g++ -O3 ...'). Do the same for your code from the previous assignment that uses processes. In a comment at the top of your program, list the average time (over five runs) it took for each parallel version to complete for at least p = 4 and N = 100,000,000. In at least three sentences, discuss why you think one version is faster than the other.
+
+Input Specification
+Input the number of processes 'p'. Assume 'p' ≥ 1.
+
+Use PRECISELY the format below with the EXACT same SPACING and spelling.
+
+Sample Input
+
+p ==> <UserInput>
+
+N ==> <UserInput>
+Output Specification
+Output the parallel sum, the parallel time, the serial sum, and the serial time. For the times use milliseconds and LIMIT the decimal places to TWO.
+
+Use PRECISELY the format shown below with the EXACT same spacing and spelling.
+
+Sample Output
+
+p ==> 4
+
+N ==> 1000000
+
+Parallel sum:  1998649
+Parallel time: 0.19 ms
+
+Serial sum:    1998649
+Serial time:   0.13 ms
+Required Functions
+// Compute partial sums and serial sum
+std::accumulate
+
+// Generate random integers to fill 'A'
+std::generate_n
+What to Submit
+Submit a single C++ source file with an answer to the question listed above AND "Timer.hpp". Do NOT rename "Timer.hpp".
+
+Hints
+See the C++ Threads example.
+
+Gary M. Zoppetti, Ph.D. 

@@ -1,0 +1,78 @@
+CSCI 476: Parallel Programming 
+Assignment 5 
+Overview
+Write a C++ program that performs a multithreaded, parallel mergesort, and a serial mergesort, on a vector of 'N' random integers. For both versions, use a recursive, divide and conquer algorithm.
+
+To avoid creating many more threads than cores in your parallel version, restrict which levels of the call tree can spawn threads, and ONLY spawn a thread to handle the LEFT subrange. Do this by obtainining 'depth' from the user, which indicates the LEVEL of the tree that may NO LONGER spawn threads. A depth of 0 should result in no threads being spawned, a depth of 1 should result in no threads spawned on level 1, and so forth. In general, a depth of 'd' results in 2d total threads being used (counting the main thread).
+
+For comparison, write a serial mergesort as well. In both the parallel and serial versions, use a cutoff value to determine when to stop recursing. If the number of elements in a subarray is LESS than or EQUAL to the cutoff, use an insertion sort.
+
+Use a mt19937 engine with a seed from random_device to generate random int's in the range [ 0, 999 ] for the vector elements. Do NOT use any distribution objects. After you populate the initial vector, copy it into two additional vectors. Sort one with the parallel mergesort, one with the serial mergesort, and one with std::sort. Check that all three vectors are equal by using operator== for vectors.
+
+Time each of the three sorting algorithms by using this Timer class. START the timer right before making a call to the function you want to time, and STOP the timer right after the call. Compile with '-O3' to obtain timing values.
+
+ENSURE all of your sorts are correct. An incorrect sort will result in a MAJOR deduction. Also, AVOID mutexes, global variables, and unnecessary copies.
+
+Input Specification
+Input the size of the vector ('N'), the small array cutoff, and the depth for the parallel version.
+
+Use PRECISELY the format below with the EXACT same SPACING and SPELLING.
+
+N      ==> <UserInput>
+Cutoff ==> <UserInput>
+Depth  ==> <UserInput> 
+Output Specification
+Output the parallel mergesort time, the serial mergesort time, and the std::sort time. Use milliseconds and limit the decimal places to two. Also output whether the parallel and serial algorithms correctly sorted the input vector by comparing each sorted vector to the one produced by std::sort. If the vectors are the same, output "true", otherwise output "false".
+
+Use PRECISELY the format below with the EXACT same SPACING and SPELLING.
+
+Sample Output
+
+N      ==> 1000000
+Cutoff ==> 20
+Depth  ==> 3
+
+Parallel time:  18.96 ms
+Serial time:    49.82 ms
+std::sort time: 38.11 ms
+
+Parallel ok? true
+Serial ok?   true
+Required Functions
+// Generate random integers
+std::generate_n
+
+// Determine the size of a range
+std::distance
+
+// Perform an insertion sort on the range [ first, last )
+template <typename Iter>
+void
+insertionSort (Iter first, Iter last)
+
+// Perform a serial mergesort on the range [ first, last )
+// Use insertion sort if the range size is LESS or EQUAL to 'cutoff'
+template <typename Iter>
+void
+mergeSortSerial (Iter first, Iter last, unsigned cutoff)
+
+// Perform a parallel mergesort on the range [ first, last )
+// Use insertion sort if the range size is LESS or EQUAL to 'cutoff'
+// If 'level' is LESS than 'depth' spawn a new thread for the left subrange,
+//   o/w perform a SERIAL mergesort
+template <typename Iter>
+void
+mergeSortParallel (Iter first, Iter last, unsigned cutoff, unsigned depth, unsigned level = 0)
+
+// Perform an in-place merge
+std::inplace_merge
+What to Submit
+Submit your C++ driver file AND "Timer.hpp". Do NOT rename "Timer.hpp".
+
+Further Exploration
+Implement a PARALLEL merge algorithm to use in your parallel mergesort.
+
+Hints
+N/A
+
+Gary M. Zoppetti, Ph.D. 
